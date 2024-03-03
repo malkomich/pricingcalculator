@@ -1,0 +1,12 @@
+DROP TABLE IF EXISTS PRICES;
+
+CREATE TABLE PRICES (
+  brand_id INT,
+  start_date TIMESTAMP NOT NULL,
+  end_date TIMESTAMP NOT NULL,
+  price_list SMALLINT DEFAULT 1,
+  product_id INT NOT NULL,
+  priority TINYINT DEFAULT 0,
+  price NUMERIC(100000, 2) NOT NULL,
+  curr CHAR(3) NOT NULL
+);
