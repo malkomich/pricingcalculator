@@ -1,0 +1,19 @@
+# H2 Database Config
+spring:
+  datasource:
+    url: jdbc:h2:mem:pricingdb
+    username: admin
+    password:
+    driverClassName: org.h2.Driver
+  jpa:
+    hibernate.ddl-auto: none
+    defer-datasource-initialization: true
+  h2.console.enabled: true
+  sql.init:
+    data-locations:
+      - classpath:db/data.sql
+    schema-locations:
+      - classpath:db/schema.sql
+
+# OpenAPI & Swagger config
+springdoc.api-docs.path: /api-docs
