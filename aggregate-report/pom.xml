@@ -26,12 +26,6 @@
 
     <dependency>
       <groupId>com.bcncgroup.pricingcalculator</groupId>
-      <artifactId>domain</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.bcncgroup.pricingcalculator</groupId>
       <artifactId>boot</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -56,8 +50,6 @@
               <outputDirectory>${project.reporting.outputDirectory}/jacoco-aggregate</outputDirectory>
               <excludes>
                 <exclude>com/bcncgroup/pricingcalculator/PricingcalculatorApplication.class</exclude>
-                <exclude>com/bcncgroup/pricingcalculator/domain/**</exclude>
-                <exclude>com/bcncgroup/pricingcalculator/adapter/primary/model/**</exclude>
                 <exclude>com/bcncgroup/pricingcalculator/adapter/secondary/entity/**</exclude>
               </excludes>
             </configuration>

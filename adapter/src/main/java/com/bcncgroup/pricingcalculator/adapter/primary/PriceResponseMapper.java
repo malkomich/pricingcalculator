@@ -8,6 +8,8 @@ import java.util.Objects;
 
 class PriceResponseMapper {
 
+  private PriceResponseMapper() {}
+
   static PriceResponse toApiResponse(Price price) {
 
     if (Objects.isNull(price)) {

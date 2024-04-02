@@ -14,6 +14,7 @@ import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -29,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcConfig
-public class PriceControllerTest {
+class PriceControllerTest {
 
   private static MockMvc mockMvc;
 
@@ -44,29 +45,28 @@ public class PriceControllerTest {
   @Test
   void getPriceSuccessful() throws Exception {
 
+    var date = LocalDateTime.of(2022, 01, 10, 12, 30);
     var priceMock = Mockito.mock(Price.class);
     Mockito.when(priceMock.getPrice()).thenReturn(BigDecimal.valueOf(35.50));
+    Mockito.when(priceMock.getStartDate()).thenReturn(date);
 
     BDDMockito
-        .given(priceCalculationUseCase.getPrice(1, 35455, LocalDateTime.parse("2020-07-14T10:00:00")))
+        .given(priceCalculationUseCase.getPrice(1, 35455, LocalDateTime.parse("2023-07-14T10:00:00")))
         .willReturn(Optional.of(priceMock));
 
-    mockMvc.perform(MockMvcRequestBuilders
+    mockMvc
+        .perform(MockMvcRequestBuilders
             .get(PriceController.PRICE_PATH)
             .param(PriceController.BRAND_ID_PARAM, "1")
             .param(PriceController.PRODUCT_ID_PARAM, "35455")
-            .param(PriceController.DATE_PARAM, "2020-07-14-10.00.00"))
+            .param(PriceController.DATE_PARAM, "2023-07-14-10.00.00"))
         .andExpect(MockMvcResultMatchers.status().isOk())
-        .andDo(mvcResult -> {
-          final String json = mvcResult.getResponse().getContentAsString();
-          final PriceResponse priceResponse = deserialize(json, PriceResponse.class);
-
-          Assertions.assertEquals(BigDecimal.valueOf(35.50), priceResponse.getPrice());
-        });
+        .andExpect(MockMvcResultMatchers.jsonPath("$.price").value("35.50"))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.startDate").value("2022-01-10-12.30.00"));
   }
 
   @Test
-  void emptyPrice() throws Exception {
+  void priceNotFound() throws Exception {
 
     BDDMockito
         .given(priceCalculationUseCase.getPrice(1, 35455, LocalDateTime.parse("2020-07-14T10:00:00")))
@@ -77,7 +77,7 @@ public class PriceControllerTest {
         .param(PriceController.BRAND_ID_PARAM, "1")
         .param(PriceController.PRODUCT_ID_PARAM, "35455")
         .param(PriceController.DATE_PARAM, "2020-07-14-10.00.00"))
-        .andExpect(status().isNoContent());
+        .andExpect(status().isNotFound());
   }
 
   @Test
@@ -112,14 +112,4 @@ public class PriceControllerTest {
             .param(PriceController.DATE_PARAM, "2020-07-14T10:00:00"))
         .andExpect(status().isBadRequest());
   }
-
-  private static <T> T deserialize(String json, Class<T> objectClass) throws IOException {
-
-    final ObjectMapper mapper = new ObjectMapper();
-    mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-    mapper.registerModule(new JavaTimeModule());
-
-    return mapper.readValue(json, objectClass);
-  }
-
 }

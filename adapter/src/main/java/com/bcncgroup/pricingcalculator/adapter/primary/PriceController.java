@@ -42,7 +42,7 @@ public class PriceController {
       @ApiResponse(responseCode = "200", content = { @Content(schema = @Schema(
           implementation = PriceResponse.class),
           mediaType = "application/json") }),
-      @ApiResponse(responseCode = "204", content = { @Content(schema = @Schema()) }),
+      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
       @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
   @GetMapping
   public ResponseEntity<PriceResponse> getPrice(
@@ -57,6 +57,6 @@ public class PriceController {
     return priceCalculationUseCase.getPrice(brandId, productId, date)
         .map(PriceResponseMapper::toApiResponse)
         .map(ResponseEntity::ok)
-        .orElseGet(() -> ResponseEntity.noContent().build());
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 }

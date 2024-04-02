@@ -13,7 +13,7 @@ import org.mockito.MockitoAnnotations;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class DatabasePriceRepositoryTest {
+class DatabasePriceRepositoryTest {
 
   @InjectMocks
   private DatabasePriceRepository databasePriceRepository;

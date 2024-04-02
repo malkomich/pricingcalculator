@@ -8,7 +8,7 @@ import org.mockito.Mockito;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class PriceEntityMapperTest {
+class PriceEntityMapperTest {
 
   @Test
   void mapSuccessful() {

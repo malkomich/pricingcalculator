@@ -14,7 +14,7 @@ import org.mockito.MockitoAnnotations;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public class PricingCalculatorServiceTest {
+class PricingCalculatorServiceTest {
 
   @InjectMocks
   private PricingCalculatorService pricingCalculatorService;
